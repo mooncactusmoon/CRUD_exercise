@@ -35,7 +35,16 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'account' => 'required|alpha_num',
+            'name' => 'required',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'email' => 'required|email:rfc,dns|unique:account_info',
+            'remark' => 'required',
+        ]);
+        Account::create($data);
+        return redirect()->route('accounts.index');
     }
 
     /**

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory;
+    protected $table = 'account_info';
     protected $fillable = [
         'account',
         'name',
@@ -17,7 +18,7 @@ class Account extends Model
         'remark',
     ];
 
-    protected $casts =[
+    protected $casts = [
         'birthday' => 'datetime:Y-m-d',
     ];
 }
