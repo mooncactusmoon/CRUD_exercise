@@ -95,8 +95,9 @@ class AccountController extends Controller
      * @param  \App\Models\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function destroy($id)
     {
-        //
+        Account::find($id)->delete();
+        return redirect()->route('accounts.index');
     }
 }

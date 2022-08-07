@@ -8,7 +8,9 @@
     <title>Account.index</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -116,6 +118,7 @@
                     <td>{{ $account->remark}}</td>
                     <td>
                         <button type="button" class="btn btn-info mx-auto" data-toggle="modal" data-target="#editModal{{$account->id}}">編輯</button>
+                        <button class="btn btn-danger mx-auto del" data-id="{{$account->id}}" data-account="{{$account->account}}">刪除</button>
                     </td>
                 </tr>
                 <!-- Edit Modal -->
@@ -180,6 +183,29 @@
         </table>
         <!-- Account of list  end-->
     </div>
+    <script>
+        $('.del').click(function() {
+            let id = $(this).data('id');
+            let account = $(this).data('account');
+            let msg = `確定要刪除帳號:' ${account} '嗎?`;
+
+            if (confirm(msg) == true) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: "accounts/" + id,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": id,
+                    },
+                    success: function(){
+                        window.location.reload()
+                    }
+                })
+            } else {
+                return false;
+            }
+        });
+    </script>
 </body>
 
 </html>
