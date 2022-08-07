@@ -24,10 +24,10 @@
             @endforeach
         </div>
         @endif()
+        <!-- Trigger the modal with a button -->
         <div class="row">
-            <!-- Trigger the modal with a button -->
             <button type="button" class="btn btn-info mx-auto" data-toggle="modal" data-target="#myModal">新增帳號</button>
-            <!-- Modal 1 -->
+            <!-- Create Modal -->
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog modal-lg">
 
@@ -82,8 +82,103 @@
                     </div>
                 </div>
             </div>
-            <!-- Model 1 end -->
+            <!-- Create Model end -->
         </div>
+        <!-- Trigger the modal with a button end -->
+
+        <!-- Account of list -->
+        <table class="table table-striped my-3">
+            <thead>
+                <tr>
+                    <th>account</th>
+                    <th>name</th>
+                    <th>gender</th>
+                    <th>birthday</th>
+                    <th>email</th>
+                    <th>remark</th>
+                    <th>operate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($accounts as $account)
+                <tr>
+                    <td>{{ $account->account}}</td>
+                    <td>{{ $account->name}}</td>
+                    <td>
+                        @if($account->gender == 0)
+                        Woman
+                        @else
+                        Man
+                        @endif
+                    </td>
+                    <td>{{ $account->birthday}}</td>
+                    <td>{{ $account->email}}</td>
+                    <td>{{ $account->remark}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info mx-auto" data-toggle="modal" data-target="#editModal{{$account->id}}">編輯</button>
+                    </td>
+                </tr>
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editModal{{$account->id}}" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">編輯帳號</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('accounts.update',$account->id) }}" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <div class="row my-2">
+                                        <label for="account" class="col-4 col-form-label "><i class="fas fa-file-signature">Account</i></label>
+                                        <p class="form-control col-6 border-info" id="account" name="account">{{ $account->account}}</p>
+                                    </div>
+                                    <div class="row my-2">
+                                        <label for="name" class="col-4 col-form-label"><i class="fas fa-mobile-alt">Name</i></label>
+                                        <input type="text" class="form-control border-info col-6" id="name" name="name" required value="{{ $account->name}}">
+                                    </div>
+                                    <div class="row my-2">
+                                        <legend class="col-form-label col-4"><i class="fas fa-mars-stroke">Gender</i></legend>
+                                        <div class="form-check">
+                                            <div>
+                                                <input class="form-check-input" type="radio" name="gender" id="man" value="1">
+                                                <label class="form-check-label" for="man">Man</label>
+                                            </div>
+                                            <div>
+                                                <input class="form-check-input" type="radio" name="gender" id="woman" value="0">
+                                                <label class="form-check-label" for="Woman">Woman</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <label for="birthday" class="col-4 col-form-label"><i class="fas fa-birthday-cake">Birthday</i></label>
+                                        <input type="date" class="date col-6" id="birthday" name="birthday" required value="{{ $account->birthday}}">
+                                    </div>
+                                    <div class="row my-2">
+                                        <label for="email" class="col-4"><i class="fas fa-at ">Email</i></label>
+                                        <p class="form-control col-6 border-info" id="email" name="email">{{ $account->email}}</p>
+                                    </div>
+                                    <div class="row my-2">
+                                        <label for="remark" class="col-4"><i class="fas fa-clipboard">Remark</i></label>
+                                        <textarea class="form-control ml-3 border-info col-6" id="remark" rows="5" name="remark" required>{{ $account->remark}}</textarea>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-info shadow p-2 mb-5 rounded"><i class="fas fa-paper-plane">Submit</i></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Edit Model end -->
+                @endforeach
+            </tbody>
+        </table>
+        <!-- Account of list  end-->
     </div>
 </body>
 

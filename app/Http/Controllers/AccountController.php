@@ -14,7 +14,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-        return view('accounts.index');
+        $accounts = Account::all();
+        return view('accounts.index', ['accounts' => $accounts]);
     }
 
     /**
@@ -36,7 +37,7 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'account' => 'required|alpha_num',
+            'account' => 'required|alpha_num|unique:account_info',
             'name' => 'required',
             'gender' => 'required',
             'birthday' => 'required',
@@ -76,9 +77,16 @@ class AccountController extends Controller
      * @param  \App\Models\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Account $account)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'remark' => 'required',
+        ]);
+        Account::find($id)->update($request->all());
+        return redirect()->route('accounts.index');
     }
 
     /**
